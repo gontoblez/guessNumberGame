@@ -1,12 +1,10 @@
 package com.example.guessnumber;
 
-import java.util.Objects;
-import java.util.Random;
 import java.util.Scanner;
+import java.util.Random;
 
 public class Main {
     public static void main(String[] args) {
-
         Scanner scanner = new Scanner(System.in);
         Random random = new Random();
 
@@ -16,7 +14,7 @@ public class Main {
         System.out.print("Please enter your name: ");
         String name = scanner.next();
         System.out.println("Hello, " + name + "!");
-        System.out.println("Would you like to play? (enter y to play or any other input to abort)");
+        System.out.println("Would you like to play? (Enter 'y' to play or any other input to abort)");
         String consent = scanner.next();
 
         if (!consent.equalsIgnoreCase("y")) {
@@ -46,53 +44,34 @@ public class Main {
 
                 int triesLeft = level.getTries() - 1 - i;
 
-                // processing input
-                if (guess > number) {
-                    System.out.println("Wrong!");
+                if (guess != number) {
+                    System.out.println("Wrong");
                     if (triesLeft != 0) {
-                        System.out.println("Guess lower!");
+                        System.out.println("Guess " + (guess > number ? "lower!" : "higher!"));
                     }
-                    System.out.println("Note: You got " + triesLeft + " more chance(s).");
+                    System.out.println("Note: You have " + triesLeft + " more chance(s).");
                     if (triesLeft == 0) {
                         System.out.println("You lost the game.");
                         System.out.println("The correct answer was: " + number);
                         level.setProgress(false);
-                    }
-                } else if (guess < number) {
-                    System.out.println("Wrong!");
-                    if (triesLeft != 0) {
-                        System.out.println("Guess higher!");
-                    }
-                    System.out.println("Note: You got " + triesLeft + " more chance(s).");
-                    if (triesLeft == 0) {
-                        System.out.println("You lost the game.");
-                        System.out.println("The correct answer was: " + number);
-                        level.setProgress(false);
-                        break;
                     }
                 } else {
                     System.out.println("Congratulations, you have guessed the number!");
-                    triesLeft = 0;
-                    if (level.getLevelNumber() != 3) {
-                        System.out.println("You now have " + triesLeft + " tries left. The number of tries will now be reset.");
-                    }
                     if (level.getLevelNumber() < 3) {
-                        System.out.print("Would you like to progress to the next level ?[Y/n]\t");
-                        String continu = scanner.next();
-                        if (continu.equals("N") || continu.equals("n")) {
+                        System.out.print("Would you like to progress to the next level ?[Y/n] ");
+                        String continueInput = scanner.next();
+                        if (!continueInput.equalsIgnoreCase("y")) {
                             System.out.println("Alright. See you soon!");
                             level.setProgress(false);
                             break;
-                        } else if (continu.equals("Y") || continu.equals("y") || continu.equals("")) {
-                            level.setLevelNumber(level.getLevelNumber() + 1);
-                            System.out.println(level.getLevelNumber());
-                            if (level.getLevelNumber() == 2) {
-                                level = new Level("Level 2", 2, 70, 4, true);
-                            } else if (level.getLevelNumber() == 3) {
-                                level = new Level("Level 3", 3, 100, 3, true);
-                            }
-                            break;
                         }
+                        level.setLevelNumber(level.getLevelNumber() + 1);
+                        if (level.getLevelNumber() == 2) {
+                            level = new Level("Level 2", 2, 70, 4, true);
+                        } else if (level.getLevelNumber() == 3) {
+                            level = new Level("Level 3", 3, 100, 3, true);
+                        }
+                        break;
                     } else if (level.getLevelNumber() == 3) {
                         System.out.println("You have beaten the game. Congratulations!");
                         level.setProgress(false);
